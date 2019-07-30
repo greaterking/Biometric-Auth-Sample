@@ -23,8 +23,9 @@ import javax.crypto.KeyGenerator;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
 
-import androidx.core.hardware.fingerprint.FingerprintManagerCompat;
-import androidx.core.os.CancellationSignal;
+import android.support.v4.hardware.fingerprint.FingerprintManagerCompat;
+
+import android.support.v4.os.CancellationSignal;
 
 
 @TargetApi(Build.VERSION_CODES.M)

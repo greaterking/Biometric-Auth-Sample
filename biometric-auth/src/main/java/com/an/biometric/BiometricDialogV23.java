@@ -1,18 +1,15 @@
 package com.an.biometric;
 
 import android.content.Context;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.view.View;
 import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.google.android.material.bottomsheet.BottomSheetDialog;
+import android.support.design.widget.BottomSheetDialog;
 
-import androidx.annotation.NonNull;
+import android.support.annotation.NonNull;
 
 public class BiometricDialogV23 extends BottomSheetDialog implements View.OnClickListener {
 

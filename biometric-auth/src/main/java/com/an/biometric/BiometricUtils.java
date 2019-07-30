@@ -6,9 +6,8 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Build;
 
-import androidx.core.app.ActivityCompat;
-import androidx.core.hardware.fingerprint.FingerprintManagerCompat;
-
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.hardware.fingerprint.FingerprintManagerCompat;
 
 @SuppressLint({"MissingPermission"})
 public class BiometricUtils {
