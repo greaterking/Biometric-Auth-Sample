@@ -6,6 +6,8 @@ import android.os.Build;
 import android.security.keystore.KeyGenParameterSpec;
 import android.security.keystore.KeyPermanentlyInvalidatedException;
 import android.security.keystore.KeyProperties;
+import android.support.v4.hardware.fingerprint.FingerprintManagerCompat;
+import android.support.v4.os.CancellationSignal;
 
 import java.io.IOException;
 import java.security.InvalidAlgorithmParameterException;
@@ -22,10 +24,6 @@ import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
-
-import android.support.v4.hardware.fingerprint.FingerprintManagerCompat;
-
-import android.support.v4.os.CancellationSignal;
 
 
 @TargetApi(Build.VERSION_CODES.M)
@@ -45,6 +43,7 @@ public class BiometricManagerV23 {
     protected String subtitle;
     protected String description;
     protected String negativeButtonText;
+    protected boolean disableBackup = false;
     private BiometricDialogV23 biometricDialogV23;
     protected CancellationSignal mCancellationSignalV23 = new CancellationSignal();
 
@@ -81,12 +80,12 @@ public class BiometricManagerV23 {
                         }
 
 
-                        @Override
+                        /*@Override
                         public void onAuthenticationFailed() {
                             super.onAuthenticationFailed();
                             updateStatus(context.getString(R.string.biometric_failed));
                             biometricCallback.onAuthenticationFailed();
-                        }
+                        }*/
                     }, null);
 
             displayBiometricDialog(biometricCallback);
@@ -98,8 +97,12 @@ public class BiometricManagerV23 {
     private void displayBiometricDialog(final BiometricCallback biometricCallback) {
         biometricDialogV23 = new BiometricDialogV23(context, biometricCallback);
         biometricDialogV23.setTitle(title);
-        biometricDialogV23.setSubtitle(subtitle);
-        biometricDialogV23.setDescription(description);
+        if (subtitle != null) {
+            biometricDialogV23.setSubtitle(subtitle);
+        }
+        if (description != null) {
+            biometricDialogV23.setDescription(description);
+        }
         biometricDialogV23.setButtonText(negativeButtonText);
         biometricDialogV23.show();
     }

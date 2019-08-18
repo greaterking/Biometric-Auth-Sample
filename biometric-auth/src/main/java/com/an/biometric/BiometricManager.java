@@ -14,6 +14,8 @@ public class BiometricManager extends BiometricManagerV23 {
 
 
     protected CancellationSignal mCancellationSignal = new CancellationSignal();
+    protected BiometricPrompt.Builder mBiometricBuilder;
+
 
     protected BiometricManager(final BiometricBuilder biometricBuilder) {
         this.context = biometricBuilder.context;
@@ -31,17 +33,6 @@ public class BiometricManager extends BiometricManagerV23 {
             return;
         }
 
-
-        if(subtitle == null) {
-            biometricCallback.onBiometricAuthenticationInternalError("Biometric Dialog subtitle cannot be null");
-            return;
-        }
-
-
-        if(description == null) {
-            biometricCallback.onBiometricAuthenticationInternalError("Biometric Dialog description cannot be null");
-            return;
-        }
 
         if(negativeButtonText == null) {
             biometricCallback.onBiometricAuthenticationInternalError("Biometric Dialog negative button text cannot be null");
@@ -96,27 +87,33 @@ public class BiometricManager extends BiometricManagerV23 {
 
     @TargetApi(Build.VERSION_CODES.P)
     private void displayBiometricPrompt(final BiometricCallback biometricCallback) {
-        new BiometricPrompt.Builder(context)
-                .setTitle(title)
-                .setSubtitle(subtitle)
-                .setDescription(description)
-                .setNegativeButton(negativeButtonText, context.getMainExecutor(), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        biometricCallback.onAuthenticationCancelled();
-                    }
-                })
-                .build()
-                .authenticate(mCancellationSignal, context.getMainExecutor(),
-                        new BiometricCallbackV28(biometricCallback));
+        mBiometricBuilder = new BiometricPrompt.Builder(context);
+        mBiometricBuilder.setTitle(title);
+        if (subtitle != null) {
+            mBiometricBuilder.setSubtitle(subtitle);
+        }
+        if (description != null) {
+            mBiometricBuilder.setDescription(description);
+        }
+        mBiometricBuilder.setNegativeButton(negativeButtonText, context.getMainExecutor(), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                biometricCallback.onAuthenticationCancelled();
+            }
+        });
+
+        mBiometricBuilder.build().authenticate(
+                mCancellationSignal,
+                context.getMainExecutor(),
+                new BiometricCallbackV28(biometricCallback));
     }
 
 
     public static class BiometricBuilder {
 
         private String title;
-        private String subtitle;
-        private String description;
+        private String subtitle = null;
+        private String description = null;
         private String negativeButtonText;
 
         private Context context;
@@ -129,12 +126,12 @@ public class BiometricManager extends BiometricManagerV23 {
             return this;
         }
 
-        public BiometricBuilder setSubtitle(@NonNull final String subtitle) {
+        public BiometricBuilder setSubtitle(final String subtitle) {
             this.subtitle = subtitle;
             return this;
         }
 
-        public BiometricBuilder setDescription(@NonNull final String description) {
+        public BiometricBuilder setDescription(final String description) {
             this.description = description;
             return this;
         }

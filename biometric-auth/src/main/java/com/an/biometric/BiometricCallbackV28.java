@@ -36,9 +36,9 @@ public class BiometricCallbackV28 extends BiometricPrompt.AuthenticationCallback
     }
 
 
-    @Override
+    /*@Override
     public void onAuthenticationFailed() {
         super.onAuthenticationFailed();
         biometricCallback.onAuthenticationFailed();
-    }
+    }*/
 }
